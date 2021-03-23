@@ -7,7 +7,7 @@ describe('Checkout', () => {
       // Reference data src/database.json
       const price = 45 + 50 + 55 + 60 + 45 * 0.5 - 5 * 3;
 
-      it('Should be NTD5 off same product!!!', () => {
+      it('Should be used discount same product and discount on purchase 3 items or more', () => {
         expect(checkout(productIDs)).toBe(price);
       });
     });

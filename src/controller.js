@@ -3,14 +3,16 @@ import database from './data/database.json';
 import NotArrayException from './exceptions/NotArrayException.js';
 import Product from './Product.js';
 
+const FIFTY_PERCENT_OFF = 0.5;
+
 // Toggle flag of isDebug enable/disable debug message
 const isDebug = process.env.MODEL === 'debug';
 
 /**
- * Find the first pair of the same product.
+ * Find the same product of the first pair
  *
  * @param {string[]} products: product list
- * @result {number[]} A pair of the index of the same products
+ * @result {number[]} A pair of the indexes of the same products
  */
 const _findFirstPairOfSameProduct = (products = []) => {
   if (!_.isArray(products)) {
@@ -47,24 +49,25 @@ const _discountOfSameProduct = (products = []) => {
     let sameProductIdx = _findFirstPairOfSameProduct(products);
 
     if (sameProductIdx.length > 0) {
-      for (let i = 0; i < sameProductIdx.length; i++) {
-        const idx = sameProductIdx[i];
-        const orgPrice = newProducts[idx].orgPrice;
-        // First item is origin price, second item is 50% off.
-        newProducts[idx].discountPrice = i === 0 ? orgPrice : orgPrice * 0.5;
-      }
+      // First item is origin price, second item is 50% off.
+      const price0 = newProducts[sameProductIdx[0]].orgPrice;
+      const price1 =
+        newProducts[sameProductIdx[1]].orgPrice * FIFTY_PERCENT_OFF;
+
+      newProducts[sameProductIdx[0]].discountPrice = price0;
+      newProducts[sameProductIdx[1]].discountPrice = price1;
     }
     return newProducts;
   }
 };
 
 /**
- * NTD5 off for each item over 3 item.
+ * NTD5 off for each item over 3 items.
  *
  * @param {Product[]} products: product list
  * @result {object[]} Modified discountPrice of products
  */
-const _discountOnPurchase3ItemOrMore = (products = []) => {
+const _discountOnPurchase3ItemsOrMore = (products = []) => {
   let newProducts = _.cloneDeep(products);
   if (!_.isArray(products)) {
     throw new NotArrayException('products');
@@ -88,7 +91,7 @@ const _discountOnPurchase3ItemOrMore = (products = []) => {
  * Sum of discount price.
  *
  * @param {Product[]} products: product list
- * @result {number} sum discountPrice of ths product list
+ * @result {number} sum of discount price
  */
 const _sumDiscountedPrice = (products = []) => {
   if (!_.isArray(products)) {
