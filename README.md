@@ -12,8 +12,8 @@ $ npm install or yarn
 ### start
 ```
 $ yarn start
-
 ```
+
 ### debug model
 ```
 $ yarn debug

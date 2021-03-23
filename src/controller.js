@@ -121,7 +121,7 @@ export const checkout = (productIDs = []) => {
     }
 
     products = _discountOfSameProduct(products);
-    products = _discountOnPurchase3ItemOrMore(products);
+    products = _discountOnPurchase3ItemsOrMore(products);
 
     if (isDebug) {
       console.log(`[Debug] product list:`);
