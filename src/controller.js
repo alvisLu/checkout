@@ -9,6 +9,16 @@ const FIFTY_PERCENT_OFF = 0.5;
 const isDebug = process.env.MODEL === 'debug';
 
 /**
+ * Ascending sort products
+ *
+ * @param {Product[]} p: products
+ * @result {Product[]} sorted products
+ */
+const _ascendingProducts = (p = []) => {
+  return p.sort((x, y) => parseInt(x.id) - parseInt(y.id));
+};
+
+/**
  * Find the same product of the first pair
  *
  * @param {string[]} products: product list
@@ -19,16 +29,10 @@ const _findFirstPairOfSameProduct = (products = []) => {
     throw new NotArrayException('products');
   } else {
     let sameProductsIdx = [];
-    for (let i = 0; i < products.length; i++) {
-      for (let j = 1; j < products.length; j++) {
-        if (j !== i && products[i].id === products[j].id) {
-          sameProductsIdx = [i, j];
-          break;
-        }
-      }
-      // Find the first pair.
-      if (sameProductsIdx.length > 1) {
-        break;
+    products = _ascendingProducts(products);
+    for (let i = 1; i < products.length; i++) {
+      if (products[i].id === products[i - 1].id) {
+        sameProductsIdx = [i - 1, i];
       }
     }
     return sameProductsIdx;
