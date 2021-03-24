@@ -49,7 +49,7 @@ const _discountOfSameProduct = (products = []) => {
   if (!_.isArray(products)) {
     throw new NotArrayException('products');
   } else {
-    let newProducts = _.cloneDeep(products);
+    let newProducts = products;
     let sameProductIdx = _findFirstPairOfSameProduct(products);
 
     if (sameProductIdx.length > 0) {
@@ -72,7 +72,7 @@ const _discountOfSameProduct = (products = []) => {
  * @result {object[]} Modified discountPrice of products
  */
 const _discountOnPurchase3ItemsOrMore = (products = []) => {
-  let newProducts = _.cloneDeep(products);
+  let newProducts = products;
   if (!_.isArray(products)) {
     throw new NotArrayException('products');
   } else if (products.length >= 3) {
